@@ -15,6 +15,7 @@ int main()
   if (file.is_open()) {
     int horizontal = 0;
     int depth = 0;
+    int aim = 0;
     string direction = "";
     while (file) {
       file >> contents;
@@ -22,10 +23,11 @@ int main()
       if (direction != "") {
         if (direction == "forward") {
           horizontal += stoi(contents);
+          depth += (aim * stoi(contents));
         } else if (direction == "up") {
-          depth -= stoi(contents);
+          aim -= stoi(contents);
         } else {
-          depth += stoi(contents);
+          aim += stoi(contents);
         }
         direction = "";
       } else {
