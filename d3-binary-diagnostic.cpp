@@ -116,3 +116,30 @@ int main()
   }
   return 0;
 }
+
+int getMostCommon(std::vector<string> v, int position) {
+  int zeros = 0;
+  for (int i = 0; i < v.size(); i++) {
+    int c = v[i][position] - 48;
+    if (c == 0) {
+      zeros++;
+    }
+  }
+  return zeros > (v.size() / 2) ? 0 : 1;
+}
+
+std::vector<string> removeElementsByPosition(std::vector<string> v, int mostCommon, int position, bool most) {
+  for (int i = 0; i < v.size(); i++) {
+    int c = v[i][position] - 48;
+    if (most) {
+      if (c != mostCommon) {
+        v.erase(v.begin() + i);
+      }
+    } else {
+      if (c == mostCommon) {
+        v.erase(v.begin() + 1);
+      }
+    }
+  }
+  return v;
+}
