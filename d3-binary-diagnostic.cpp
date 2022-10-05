@@ -11,6 +11,58 @@ struct S {
 
 using namespace std;
 
+void printVecotr(std::vector<string> v, string name) {
+  std::cout << name << " = { ";
+  for (string n : v) {
+    std::cout << n << ", ";
+  }
+  std::cout << "}; \n";
+}
+
+int getMostCommon(std::vector<string> v, int position) {
+  int zeros = 0;
+  int ones = 0;
+  for (int i = 0; i < v.size(); i++) {
+    int c = v[i][position] - '0';
+    if (c == 0) {
+      zeros++;
+    } else {
+      ones++;
+    }
+  }
+  return ones >= zeros ? 1 : 0;
+}
+
+int getLeastCommon(std::vector<string> v, int position) {
+  int zeros = 0;
+  int ones = 0;
+  for (int i = 0; i < v.size(); i++) {
+    int c = v[i][position] - '0';
+    if (c == 0) {
+      zeros++;
+    } else {
+      ones++;
+    }
+  }
+  return zeros <= ones ? 0 : 1;
+}
+
+std::vector<string> removeElementsByPosition(std::vector<string> v, int comparison, int position) {
+  int i = 0;
+  int c = v[i][position] - '0';
+  int loops = 0;
+  while (i < v.size() && (loops < v.size())) {
+    if (c != comparison) {
+      v.erase(v.begin() + i);
+    } else {
+      i++;
+    }
+    c = v[i][position] - '0';
+    i++;
+  }
+  return v;
+}
+
 int main()
 {
   std::ifstream file;
@@ -49,17 +101,9 @@ int main()
         epsilon[j] = 0;
       }
 
-
-      std::cout << v1.size() << "\n";
+      std::cout << "before: " << v1.size() << "\n";
       if (v1.size() != 1) {
-        for (int n = 0; n < v1.size(); n++) {
-          int c = v1[n][j] - 48;
-          std::cout << "c: " << c << "\n";
-          if (c != gamma[j]) {
-            v1.erase(v1.begin() + n);
-            n--;
-          }
-        }
+        v1 = removeElementsByPosition(v1, getMostCommon(v1, j), j);
       } else {
         std::cout << "v1 = { ";
         for (string n : v1) {
@@ -67,18 +111,16 @@ int main()
         }
         std::cout << "}; \n";
       }
-      
+      std::cout << "after: " << v1.size() << "\n";
 
-
+    std::cout << "v2 = { ";
+    for (string n : v2) {
+      std::cout << n << ", ";
+    }
+    std::cout << "}; \n";
 
       if (v2.size() != 1) {
-        for (int n = 0; n < v2.size(); n++) {
-          int c = v2[n][j] - 48;
-          if (c == gamma[j]) {
-            v2.erase(v2.begin() + n);
-            n--;
-          }
-        }
+        v2 = removeElementsByPosition(v2, getLeastCommon(v2, j), j);
       } else {
         std::cout << "v2 = { ";
         for (string n : v2) {
@@ -95,51 +137,19 @@ int main()
         e += pow(2, (11-k));
       }
     }
-    std::cout << "g: " << g;
-    std:: cout << "\n";
-    std::cout << "e: " << e;
-    std:: cout << "\n";
 
-
-
-        std::cout << "v1 = { ";
-        for (string n : v1) {
-          std::cout << n << ", ";
-        }
-        std::cout << "}; \n";
+    std::cout << "v1 = { ";
+    for (string n : v1) {
+      std::cout << n << ", ";
+    }
+    std::cout << "}; \n";
 
     std::cout << "v2 = { ";
-        for (string n : v2) {
-          std::cout << n << ", ";
-        }
-        std::cout << "}; \n";
+    for (string n : v2) {
+      std::cout << n << ", ";
+    }
+    std::cout << "}; \n";
   }
   return 0;
 }
 
-int getMostCommon(std::vector<string> v, int position) {
-  int zeros = 0;
-  for (int i = 0; i < v.size(); i++) {
-    int c = v[i][position] - 48;
-    if (c == 0) {
-      zeros++;
-    }
-  }
-  return zeros > (v.size() / 2) ? 0 : 1;
-}
-
-std::vector<string> removeElementsByPosition(std::vector<string> v, int mostCommon, int position, bool most) {
-  for (int i = 0; i < v.size(); i++) {
-    int c = v[i][position] - 48;
-    if (most) {
-      if (c != mostCommon) {
-        v.erase(v.begin() + i);
-      }
-    } else {
-      if (c == mostCommon) {
-        v.erase(v.begin() + 1);
-      }
-    }
-  }
-  return v;
-}
